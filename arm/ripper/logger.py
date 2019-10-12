@@ -7,7 +7,7 @@ import time
 from arm.config.config import cfg
 
 
-def setuplogging(job):
+def setuplogging(job, drive_id=""):
     """Setup logging and return the path to the logfile for
     redirection of external calls"""
 
@@ -16,11 +16,11 @@ def setuplogging(job):
 
     if job.label == "" or job.label is None:
         if job.disctype == "music":
-            logfile = "music_cd.log"
+            logfile = f"music_cd.{drive_id}.log"
         else:
-            logfile = "empty.log"
+            logfile = f"empty.{drive_id}.log"
     else:
-        logfile = job.label + ".log"
+        logfile = job.label + f".{drive_id}.log"
 
     if cfg['LOGPATH'][-1:] == "/":
         logfull = cfg['LOGPATH'] + logfile

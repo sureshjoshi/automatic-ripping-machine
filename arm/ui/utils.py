@@ -8,15 +8,24 @@ from arm.config.config import cfg
 
 def get_info(directory):
     file_list = []
-    for i in os.listdir(directory):
-        if os.path.isfile(os.path.join(directory, i)):
-            a = os.stat(os.path.join(directory, i))
-            fsize = os.path.getsize(os.path.join(directory, i))
-            fsize = round((fsize / 1024), 1)
-            fsize = "{0:,.1f}".format(fsize)
-            create_time = strftime('%Y-%m-%d %H:%M:%S', localtime(a.st_ctime))
-            access_time = strftime('%Y-%m-%d %H:%M:%S', localtime(a.st_atime))
-            file_list.append([i, access_time, create_time, fsize])  # [file,most_recent_access,created]
+    drive_id = cfg['DRIVE_ID']
+
+    for f in os.listdir(directory):
+        filepath = os.path.join(directory, f)
+        if not os.path.isfile(filepath):
+            continue
+
+        if not drive_id in f:
+            continue
+
+        a = os.stat(filepath)
+        fsize = os.path.getsize(filepath)
+        fsize = round((fsize / 1024), 1)
+        fsize = "{0:,.1f}".format(fsize)
+        create_time = strftime('%Y-%m-%d %H:%M:%S', localtime(a.st_ctime))
+        access_time = strftime('%Y-%m-%d %H:%M:%S', localtime(a.st_atime))
+        file_list.append([f, access_time, create_time, fsize])  # [file,most_recent_access,created]
+
     return file_list
 
 
